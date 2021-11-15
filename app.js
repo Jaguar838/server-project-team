@@ -37,13 +37,6 @@ app.use(
 app.use(express.json({ limit: 10000 }));
 app.use(boolParser());
 
-// Headers Accept-Language
-app.use((req, _res, next) => {
-  // console.log(req.acceptsLanguages());
-  app.set('lang', req.acceptsLanguages(['en', 'ru']));
-  next();
-});
-
 // Routes
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
