@@ -13,10 +13,6 @@ const schemaLogin = Joi.object({
   password: Joi.string().alphanum().min(8).required(),
 });
 
-const schemaSubscription = Joi.object({
-  subscription: Joi.string().valid("starter", "pro", "business").optional(),
-});
-
 const validate = async (schema, obj, res, next) => {
   try {
     await schema.validateAsync(obj);
@@ -37,8 +33,4 @@ module.exports.validateRegistration = async (req, res, next) => {
 
 module.exports.validateLogin = async (req, res, next) => {
   return await validate(schemaLogin, req.body, res, next);
-};
-
-module.exports.validateSubscriptionUser = async (req, res, next) => {
-  return await validate(schemaSubscription, req.body, res, next);
 };
