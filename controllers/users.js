@@ -1,17 +1,17 @@
-const jwt = require("jsonwebtoken");
-const Users = require("../repository/users");
-const { HttpCode } = require("../config/constants");
-const { CustomError } = require("../helpers/customError");
+const jwt = require('jsonwebtoken');
+const Users = require('../repository/users');
+const { HttpCode } = require('../config/constants');
+const { CustomError } = require('../helpers/customError');
 
 // Email
-const EmailService = require("../services/email/service");
-const { CreateSenderNodemailer } = require("../services/email/sender");
-require("dotenv").config();
+const EmailService = require('../services/email/service');
+const { CreateSenderNodemailer } = require('../services/email/sender');
+require('dotenv').config();
 
 // file upload
-const path = require("path");
-const mkdirp = require("mkdirp");
-const UploadService = require("../services/avatars/file-upload");
+const path = require('path');
+const mkdirp = require('mkdirp');
+const UploadService = require('../services/avatars/file-upload');
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
@@ -20,9 +20,9 @@ const registration = async (req, res, next) => {
   const user = await Users.findByEmail(email);
   if (user) {
     return res.status(HttpCode.CONFLICT).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.CONFLICT,
-      message: "Email is already exist",
+      message: 'Email is already exist',
     });
   }
   try {
@@ -30,15 +30,15 @@ const registration = async (req, res, next) => {
     const newUser = await Users.create({ name, email, password });
     const emailService = new EmailService(
       process.env.NODE_ENV,
-      new CreateSenderNodemailer()
+      new CreateSenderNodemailer(),
     );
     const statusEmail = await emailService.sendVerifyEmail(
       newUser.email,
       newUser.name,
-      newUser.verifyTokenEmail
+      newUser.verifyTokenEmail,
     );
     return res.status(HttpCode.CREATED).json({
-      status: "success",
+      status: 'success',
       code: HttpCode.CREATED,
       data: {
         id: newUser.id,
@@ -63,17 +63,17 @@ const login = async (req, res) => {
   // 3) состояние isVerified = false.
   if (!user || !isValidPassword || !user?.isVerified) {
     return res.status(HttpCode.UNAUTHORIZED).json({
-      status: "error",
+      status: 'error',
       code: HttpCode.UNAUTHORIZED,
-      message: "Invalid credentials",
+      message: 'Invalid credentials',
     });
   }
   const id = user._id;
   const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
   await Users.updateToken(id, token);
   return res.status(HttpCode.OK).json({
-    status: "success",
+    status: 'success',
     code: HttpCode.OK,
     data: {
       token,
@@ -84,7 +84,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   const id = req.user._id;
   await Users.updateToken(id, null);
-  return res.status(HttpCode.NO_CONTENT).json({ test: "test" });
+  return res.status(HttpCode.NO_CONTENT).json({ test: 'test' });
 };
 
 const current = async (req, res) => {
@@ -92,19 +92,19 @@ const current = async (req, res) => {
   const user = await Users.findById(userId);
   if (user) {
     return res.status(HttpCode.OK).json({
-      status: "success",
+      status: 'success',
       code: HttpCode.OK,
-      message: "Current user",
+      message: 'Current user',
       data: {
         // user,
         id: user.id,
         email: user.email,
-        subscription: user.subscription,
+        balance: user.balance,
         avatar: user.avatar,
       },
     });
   }
-  throw new CustomError(HttpCode.NOT_FOUND, "Not Found");
+  throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 };
 
 const update = async (req, res) => {
@@ -112,7 +112,7 @@ const update = async (req, res) => {
   const user = await Users.updateSubscription(userId, req.body);
   if (user) {
     return res.status(HttpCode.OK).json({
-      status: "success",
+      status: 'success',
       code: HttpCode.OK,
       data: {
         email: user.email,
@@ -120,7 +120,7 @@ const update = async (req, res) => {
       },
     });
   }
-  throw new CustomError(HttpCode.NOT_FOUND, "Not Found");
+  throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 };
 
 // Local upload
@@ -134,7 +134,7 @@ const uploadAvatar = async (req, res, next) => {
   const avatarUrl = await uploadService.save(file, id);
   await Users.updateAvatar(id, avatarUrl);
   return res.status(200).json({
-    status: "success",
+    status: 'success',
     code: 200,
     data: {
       avatar: avatarUrl,
@@ -151,17 +151,17 @@ const verifyUser = async (req, res, next) => {
   if (user) {
     await Users.updateTokenVerify(user._id, true, null);
     return res.status(HttpCode.OK).json({
-      status: "success",
+      status: 'success',
       code: HttpCode.OK,
       data: {
-        message: "Verification successful!",
+        message: 'Verification successful!',
       },
     });
   }
   return res.status(HttpCode.BAD_REQUEST).json({
-    status: "error",
+    status: 'error',
     code: HttpCode.BAD_REQUEST,
-    message: "Invalid token",
+    message: 'Invalid token',
   });
 };
 
@@ -173,20 +173,20 @@ const repeatEmailForVerifyUser = async (req, res, next) => {
     const { email, name, verifyTokenEmail } = user;
     const emailService = new EmailService(
       process.env.NODE_ENV,
-      new CreateSenderNodemailer()
+      new CreateSenderNodemailer(),
     );
     // debugger;
     const statusEmail = await emailService.sendVerifyEmail(
       email,
       name,
-      verifyTokenEmail
+      verifyTokenEmail,
     );
   }
   return res.status(HttpCode.OK).json({
-    status: "success",
+    status: 'success',
     code: HttpCode.OK,
     data: {
-      message: "Verify successful!",
+      message: 'Verify successful!',
     },
   });
 };

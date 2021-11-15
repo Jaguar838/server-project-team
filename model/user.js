@@ -1,6 +1,6 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcryptjs");
-const crypto = require("crypto");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const SALT_FACTOR = 3;
 
 const userSchema = new Schema(
@@ -9,11 +9,11 @@ const userSchema = new Schema(
       type: String,
       min: 2,
       max: 30,
-      default: "Guest",
+      default: 'Guest',
     },
     email: {
       type: String,
-      required: [true, "Set email for user"],
+      required: [true, 'Set email for user'],
       unique: true,
       validate(value) {
         const re = /\S+@\S+.\S+/;
@@ -22,7 +22,11 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Set password for user"],
+      required: [true, 'Set password for user'],
+    },
+    balance: {
+      type: Number,
+      default: 0,
     },
     token: {
       type: String,
@@ -46,7 +50,7 @@ const userSchema = new Schema(
     // но у него есть для верификации токен генерируемый по умолчанию в db.
     verifyTokenEmail: {
       type: String,
-      required: [true, "Verify token is required"],
+      required: [true, 'Verify token is required'],
       default: crypto.randomUUID(),
     },
   },
@@ -62,11 +66,11 @@ const userSchema = new Schema(
       },
     },
     toObject: { virtuals: true },
-  }
+  },
 );
 
-userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
+userSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(SALT_FACTOR);
     this.password = await bcrypt.hash(this.password, salt);
   }
@@ -77,6 +81,6 @@ userSchema.methods.isValidPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const User = model("user", userSchema);
+const User = model('user', userSchema);
 
 module.exports = User;

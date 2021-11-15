@@ -16,13 +16,7 @@ const {
   repeatEmailForVerifyUser,
 } = require("../../controllers/users");
 
-const {
-  validateRegistration,
-  validateLogin,
-  validateSubscriptionUser,
-} = require("./validation");
-
-router.patch("/", guard, validateSubscriptionUser, wrapError(update));
+const { validateRegistration, validateLogin } = require("./validation");
 
 router.post("/signup", validateRegistration, registration);
 
