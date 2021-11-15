@@ -23,15 +23,17 @@ app.use(helmet());
 
 // remove logs in test mode
 app.get('env') !== 'test' && app.use(logger(formatsLogger));
-// app.use(
-//   cors({
-//     origin: 'http://localhost:3000',
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     preflightContinue: false,
-//     optionsSuccessStatus: 204,
-//     credentials: true,
-//   }),
-// );
+
+// Настройки для локалхоста
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+  }),
+);
 
 // parse application/json limit 10Kb
 app.use(express.json({ limit: 10000 }));
