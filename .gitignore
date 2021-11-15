@@ -1,7 +1,6 @@
 .dccache
 node_modules
 client-project-team/
-.env
 *.log
 *.zip
 
