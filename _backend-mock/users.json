@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "id": "6186900cee50ba6e78f43531",
+      "name": "Krokodil",
+      "email": "krokodil@gmail.com",
+      "balance": 100000.0
+    },
+    {
+      "id": "6186f2f48b87fc7324860bd7",
+      "name": "Alligator",
+      "email": "alligator@gmail.com",
+      "balance": 80000.0
+    },
+    {
+      "id": "6186f2f48b87fc7324860bd8",
+      "name": "Gavial",
+      "email": "gavial@gmail.com",
+      "balance": 60000.0
+    },
+    {
+      "id": "6186f2f48b87fc7324860bd9",
+      "name": "Kaiman",
+      "email": "kaiman@gmail.com",
+      "balance": 40000.0
+    }
+  ]
+}

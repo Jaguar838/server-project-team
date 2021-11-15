@@ -12,4 +12,10 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-module.exports = { HttpCode };
+const ResponseStatus = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+  FAIL: 'fail',
+};
+
+module.exports = { HttpCode, ResponseStatus };

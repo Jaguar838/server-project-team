@@ -1,9 +1,10 @@
-const { Schema, model, SchemaTypes } = require("mongoose");
+const { Schema, model, SchemaTypes } = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
-const SchemaTransactions = new Schema(
+const transactionSchema = new Schema(
   {
     date: {
-      type: Number,
+      type: Date,
     },
     isExpense: { type: Boolean, default: false },
     category: {
@@ -11,7 +12,7 @@ const SchemaTransactions = new Schema(
     },
     comment: {
       type: String,
-      default: "",
+      default: '',
     },
     amount: {
       type: Number,
@@ -21,7 +22,7 @@ const SchemaTransactions = new Schema(
     },
     owner: {
       type: SchemaTypes.ObjectId,
-      ref: "user",
+      ref: 'user',
     },
   },
   {
@@ -34,9 +35,11 @@ const SchemaTransactions = new Schema(
         return ret;
       },
     },
-  }
+  },
 );
 
-const Transactions = model("transactions", SchemaTransactions);
+transactionSchema.plugin(mongoosePaginate);
 
-module.exports = Transactions;
+const Transaction = model('transaction', transactionSchema);
+
+module.exports = Transaction;
