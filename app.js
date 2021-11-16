@@ -5,7 +5,7 @@ const cors = require('cors');
 const usersRouter = require('./routes/users/users');
 const transactionsRouter = require('./routes/transactions/transactions');
 const categoriesRouter = require('./routes/categories/categories');
-// const swaggerRouter = require("./routes/swagger/swagger");
+const swaggerRouter = require('./routes/swagger/swagger');
 
 // protect against CSRF attacks
 const helmet = require('helmet');
@@ -43,7 +43,7 @@ app.use(boolParser());
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/categories', categoriesRouter);
-// app.use("/api-docs", swaggerRouter);
+app.use('/api/docs', swaggerRouter);
 
 app.use((req, res) => {
   res
