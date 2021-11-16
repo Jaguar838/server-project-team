@@ -15,42 +15,35 @@ const UploadService = require('../services/avatars/file-upload');
 
 const SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-const registration = async (req, res, next) => {
+const registration = async (req, res) => {
   const { name, email, password } = req.body;
   const user = await Users.findByEmail(email);
   if (user) {
-    return res.status(HttpCode.CONFLICT).json({
-      status: 'error',
-      code: HttpCode.CONFLICT,
-      message: 'Email is already exist',
-    });
+    throw new CustomError(HttpCode.CONFLICT, 'Email is already in use');
   }
-  try {
-    // Создаем нового пользователя и verifyToken
-    const newUser = await Users.create({ name, email, password });
-    const emailService = new EmailService(
-      process.env.NODE_ENV,
-      new CreateSenderNodemailer(),
-    );
-    const statusEmail = await emailService.sendVerifyEmail(
-      newUser.email,
-      newUser.name,
-      newUser.verifyTokenEmail,
-    );
-    return res.status(HttpCode.CREATED).json({
-      status: 'success',
-      code: HttpCode.CREATED,
-      data: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        avatar: newUser.avatar,
-        successEmail: statusEmail,
-      },
-    });
-  } catch (e) {
-    next(e);
-  }
+
+  // Создаем нового пользователя и verifyToken
+  const newUser = await Users.create({ name, email, password });
+  const emailService = new EmailService(
+    process.env.NODE_ENV,
+    new CreateSenderNodemailer(),
+  );
+  const statusEmail = await emailService.sendVerifyEmail(
+    newUser.email,
+    newUser.name,
+    newUser.verifyTokenEmail,
+  );
+  return res.status(HttpCode.CREATED).json({
+    status: 'success',
+    code: HttpCode.CREATED,
+    data: {
+      id: newUser.id,
+      name: newUser.name,
+      email: newUser.email,
+      avatar: newUser.avatar,
+      successEmail: statusEmail,
+    },
+  });
 };
 
 const login = async (req, res) => {
@@ -61,13 +54,22 @@ const login = async (req, res) => {
   // 1) не сущ. в db;
   // 2) ввел не валидный пароль;
   // 3) состояние isVerified = false.
-  if (!user || !isValidPassword || !user?.isVerified) {
-    return res.status(HttpCode.UNAUTHORIZED).json({
-      status: 'error',
-      code: HttpCode.UNAUTHORIZED,
-      message: 'Invalid credentials',
-    });
+
+  if (!user || !isValidPassword) {
+    throw new CustomError(HttpCode.UNAUTHORIZED, 'Invalid credentials');
   }
+
+  if (!user?.verify) {
+    throw new CustomError(HttpCode.UNAUTHORIZED, 'User email not verified yet');
+  }
+
+  // if (!user || !isValidPassword || !user?.isVerified) {
+  //   return res.status(HttpCode.UNAUTHORIZED).json({
+  //     status: 'error',
+  //     code: HttpCode.UNAUTHORIZED,
+  //     message: 'Invalid credentials',
+  //   });
+  // }
   const id = user._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
@@ -124,7 +126,7 @@ const update = async (req, res) => {
 };
 
 // Local upload
-const uploadAvatar = async (req, res, next) => {
+const uploadAvatar = async (req, res) => {
   const id = String(req.user._id);
   const file = req.file;
   const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
@@ -146,7 +148,7 @@ const uploadAvatar = async (req, res, next) => {
 };
 
 // Controllers verify User
-const verifyUser = async (req, res, next) => {
+const verifyUser = async (req, res) => {
   const user = await Users.findUserByVerifyToken(req.params.token);
   if (user) {
     await Users.updateTokenVerify(user._id, true, null);
@@ -166,27 +168,38 @@ const verifyUser = async (req, res, next) => {
 };
 
 // Controllers repeat email  for verify User
-const repeatEmailForVerifyUser = async (req, res, next) => {
+const repeatEmailForVerifyUser = async (req, res) => {
   const { email } = req.body;
   const user = await Users.findByEmail(email);
-  if (user) {
-    const { email, name, verifyTokenEmail } = user;
-    const emailService = new EmailService(
-      process.env.NODE_ENV,
-      new CreateSenderNodemailer(),
-    );
-    // debugger;
-    const statusEmail = await emailService.sendVerifyEmail(
-      email,
-      name,
-      verifyTokenEmail,
+
+  if (!user) {
+    throw new CustomError(HttpCode.NOT_FOUND, 'Not found');
+  }
+
+  if (user?.isVerified) {
+    throw new CustomError(
+      HttpCode.BAD_REQUEST,
+      'Verification has already been passed',
     );
   }
+
+  const { name, verifyTokenEmail } = user;
+  const emailService = new EmailService(
+    process.env.NODE_ENV,
+    new CreateSenderNodemailer(),
+  );
+  // debugger;
+  const statusEmail = await emailService.sendVerifyEmail(
+    email,
+    name,
+    verifyTokenEmail,
+  );
+
   return res.status(HttpCode.OK).json({
     status: 'success',
     code: HttpCode.OK,
     data: {
-      message: 'Verify successful!',
+      message: 'Verification email sent',
     },
   });
 };

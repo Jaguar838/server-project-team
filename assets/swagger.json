@@ -1,0 +1,654 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Wallet",
+    "description": "Web application for managing your expenses",
+    "version": "1.0.0"
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transaction endpoints"
+    },
+
+    {
+      "name": "Categories",
+      "description": "Category endpoints"
+    }
+  ],
+  "servers": [
+    { "url": "http://localhost:3000" },
+    { "url": "https://nameless-reef-47827.herokuapp.com" }
+  ],
+  "paths": {
+    "/users/signup": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User signup",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@email.com",
+                    "description": "Email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123",
+                    "description": "Password"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "My Name",
+                    "description": "Name"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "201"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": {
+                        "id": "id-123-qwe-456-rty",
+                        "email": "example@email.com",
+                        "name": "My Name",
+                        "avatar": "https://path/to/avatar",
+                        "successEmail": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict (email is already in use)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "409"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Email is already in use"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@email.com",
+                    "description": "Email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123",
+                    "description": "Password"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": {
+                        "token": "token_123qwe456rty"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User logout",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "204": { "description": "Success" },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get current user",
+        "security": [{ "Bearer": [] }],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": {
+                        "user": {
+                          "id": "id-123-qwe-456-rty",
+                          "email": "example@email.com",
+                          "name": "My Name",
+                          "balance": 10000,
+                          "avatar": "https://path/to/avatar"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/verify/:token": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Verify email with token",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": {
+                        "message": "Verification successful!"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (Invalid token)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Invalid token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "/users/verify": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Resend verification email",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@email.com",
+                    "description": "Email"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": { "message": "Verification email sent" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request (Verification already passed)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Verification has already been passed"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "404"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/avatars": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Change user avatar",
+        "security": [{ "Bearer": [] }],
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "name": "avatar",
+            "in": "query",
+            "description": "upload new avatar",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "file"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": { "avatar": "https://path/to/avatar" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error500": {
+        "description": "Internal Server Error",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "response status",
+            "example": "fail"
+          },
+          "code": {
+            "type": "string",
+            "description": "response code",
+            "example": "500"
+          },
+          "message": {
+            "type": "string",
+            "description": "response message",
+            "example": "Something is wrong. Try again later"
+          },
+          "data": {
+            "type": "string",
+            "description": "response data",
+            "example": "Internal Server Found"
+          }
+        }
+      }
+    },
+
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "schemes": ["http", "https"]
+}
