@@ -6,12 +6,15 @@ const { CustomError } = require('../helpers/customError');
 
 const getTransactions = async (req, res) => {
   const userId = req?.user?._id; // TODO: replace ?.
-  const data = await Transactions.listTransactions(userId, req.query);
+  const { pageInfo, transactions } = await Transactions.listTransactions(
+    userId,
+    req.query,
+  );
 
   res.status(HttpCode.OK).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.OK,
-    data: { ...data },
+    data: { pageInfo, transactions },
   });
 };
 

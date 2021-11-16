@@ -1,7 +1,6 @@
 .dccache
 node_modules
 client-project-team/
-.env
 *.log
 *.zip
 
@@ -11,3 +10,4 @@ yarn-error.log*
 coverage/
 yarn.lock
 package-lock.json
+.env

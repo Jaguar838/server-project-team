@@ -1,16 +1,16 @@
-const db = require("../config/db");
-const app = require("../app");
+const db = require('../config/db');
+const app = require('../app');
 
-const result = require("dotenv").config();
+const result = require('dotenv').config();
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR;
 const AVATAR_OF_USERS = process.env.AVATAR_OF_USERS;
-const mkdirp = require("mkdirp");
+const mkdirp = require('mkdirp');
 if (result.error) {
   throw result.error;
 }
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 db.then(() => {
   app.listen(PORT, () => {
@@ -18,6 +18,6 @@ db.then(() => {
     mkdirp(AVATAR_OF_USERS);
     console.log(`Server running. Use our API on port: ${PORT}`);
   });
-}).catch((err) => {
+}).catch(err => {
   console.log(`Server not run. Error: ${err.message}`);
 });

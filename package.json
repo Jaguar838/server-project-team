@@ -2,14 +2,10 @@
   "name": "wallet-api",
   "version": "1.0.0",
   "main": "app.js",
+  "license": "ISC",
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/server.js",
-    "dev": "cross-env NODE_ENV=development nodemon ./bin/server.js",
-    "debug": "node --inspect ./bin/server.js",
-    "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js",
-    "heroku:add": "heroku git:remote -a",
-    "deploy:heroku": "git subtree push --prefix server heroku master"
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
