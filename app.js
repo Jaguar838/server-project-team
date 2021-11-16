@@ -41,7 +41,7 @@ app.use(boolParser());
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/categories', categoriesRouter);
-app.use('/api-docs', swaggerRouter);
+app.use('/api/docs', swaggerRouter);
 
 app.use((req, res) => {
   res

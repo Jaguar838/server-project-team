@@ -59,17 +59,10 @@ const login = async (req, res) => {
     throw new CustomError(HttpCode.UNAUTHORIZED, 'Invalid credentials');
   }
 
-  if (!user?.verify) {
+  if (!user?.isVerified) {
     throw new CustomError(HttpCode.UNAUTHORIZED, 'User email not verified yet');
   }
 
-  // if (!user || !isValidPassword || !user?.isVerified) {
-  //   return res.status(HttpCode.UNAUTHORIZED).json({
-  //     status: 'error',
-  //     code: HttpCode.UNAUTHORIZED,
-  //     message: 'Invalid credentials',
-  //   });
-  // }
   const id = user._id;
   const payload = { id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });

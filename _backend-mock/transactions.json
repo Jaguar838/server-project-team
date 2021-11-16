@@ -1,184 +1,550 @@
-{
-  "data": [
-    {
-      "id": "6186900cee50ba6e78f43100",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Разное",
-      "comment": "Подарок жене",
-      "amount": 300,
-      "balance": 9700.0
+[
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9272"
     },
-    {
-      "id": "6186900cee50ba6e78f43101",
-      "date": "10.11.21",
-      "isExpense": false,
-      "category": "Доход",
-      "comment": "Выигрыш в лотерею",
-      "amount": 10000,
-      "balance": 19700.0
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
     },
-    {
-      "id": "6186900cee50ba6e78f43102",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Машина",
-      "comment": "Зимняя резина",
-      "amount": 11000,
-      "balance": 8700.0
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Другие расходы",
+    "comment": "Подарок жене",
+    "amount": 300,
+    "balance": 9700,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
     },
-    {
-      "id": "6186900cee50ba6e78f43103",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Продукты",
-      "comment": "Продукты в АТБ",
-      "amount": 2500,
-      "balance": 6200.0
+    "createdAt": {
+      "$date": "2021-11-16T01:00:07.843Z"
     },
-    {
-      "id": "6186900cee50ba6e78f43104",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Товаы для дома",
-      "comment": "Покупка пылесоса",
-      "amount": 2000,
-      "balance": 4200.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43105",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Образование",
-      "comment": "Книга \"Заветы А. Репеты\"",
-      "amount": 500,
-      "balance": 3700.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43106",
-      "date": "10.11.21",
-      "isExpense": true,
-      "category": "Досуг",
-      "comment": "Пиво с другом",
-      "amount": 500,
-      "balance": 3200.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43107",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Забота о детях",
-      "comment": "Погремушка",
-      "amount": 200,
-      "balance": 3000.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43108",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Забота о себе",
-      "comment": "Велотренажер",
-      "amount": 2900,
-      "balance": 100.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43109",
-      "date": "11.11.21",
-      "isExpense": false,
-      "category": "Доход",
-      "comment": "Зарплата за ноябрь",
-      "amount": 30000,
-      "balance": 30100.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43110",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Разное",
-      "comment": "Подарок любовнице",
-      "amount": 10000,
-      "balance": 20100.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43111",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Машина",
-      "comment": "Замена бензонасоса",
-      "amount": 300,
-      "balance": 19800.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43112",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Досуг",
-      "comment": "Теннисный мячик",
-      "amount": 300,
-      "balance": 19500.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43113",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Продукты",
-      "comment": "Огурцы для консервации",
-      "amount": 2500,
-      "balance": 17000.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43114",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Образование",
-      "comment": "Запись на курсы макраме",
-      "amount": 1000,
-      "balance": 16000.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43115",
-      "date": "12.11.21",
-      "isExpense": true,
-      "category": "Товары для дома",
-      "comment": "Швабра",
-      "amount": 500,
-      "balance": 15500.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43116",
-      "date": "12.11.21",
-      "isExpense": false,
-      "category": "Доход",
-      "comment": "Возврат долга (Вася)",
-      "amount": 1000,
-      "balance": 16500.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43117",
-      "date": "11.11.21",
-      "isExpense": true,
-      "category": "Образование",
-      "comment": "Сказка \"Колобок и коллбэк\"",
-      "amount": 300,
-      "balance": 16200.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43118",
-      "date": "12.11.21",
-      "isExpense": true,
-      "category": "Продукты",
-      "comment": "Мешок гречки",
-      "amount": 2000,
-      "balance": 14200.0
-    },
-    {
-      "id": "6186900cee50ba6e78f43119",
-      "date": "12.11.21",
-      "isExpense": true,
-      "category": "Машина",
-      "comment": "Цепь на выхлопную трубу",
-      "amount": 1000,
-      "balance": 13200.0
+    "updatedAt": {
+      "$date": "2021-11-16T01:00:07.843Z"
     }
-  ]
-}
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9273"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": false,
+    "type": "+",
+    "category": "Доход",
+    "comment": "Выигрыш в лотерею",
+    "amount": 10000,
+    "balance": 19700,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:01:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:01:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9274"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Машина",
+    "comment": "Зимняя резина",
+    "amount": 11000,
+    "balance": 8700,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:02:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:02:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9275"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Продукты",
+    "comment": "Продукты в АТБ",
+    "amount": 2500,
+    "balance": 6200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:03:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:03:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9276"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Товары для дома",
+    "comment": "Покупка пылесоса",
+    "amount": 2000,
+    "balance": 4200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:04:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:04:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9277"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Образование",
+    "comment": "Книга \"Заветы А. Репеты\"",
+    "amount": 500,
+    "balance": 3700,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:05:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:05:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9278"
+    },
+    "date": {
+      "$date": "2021-11-10T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Досуг",
+    "comment": "Пиво с другом",
+    "amount": 500,
+    "balance": 3200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:06:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:06:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9279"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Забота о детях",
+    "comment": "Погремушка",
+    "amount": 200,
+    "balance": 3000,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:07:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:07:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927a"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Забота о себе",
+    "comment": "Велотренажер",
+    "amount": 2900,
+    "balance": 100,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:08:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:08:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927b"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": false,
+    "type": "+",
+    "category": "Доход",
+    "comment": "Зарплата за ноябрь",
+    "amount": 30000,
+    "balance": 30100,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:09:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:09:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927c"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Другие расходы",
+    "comment": "Подарок любовнице",
+    "amount": 10000,
+    "balance": 20100,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:10:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:10:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927d"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Машина",
+    "comment": "Замена бензонасоса",
+    "amount": 300,
+    "balance": 19800,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:11:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:11:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927e"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Досуг",
+    "comment": "Теннисный мячик",
+    "amount": 300,
+    "balance": 19500,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:12:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:12:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf927f"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Продукты",
+    "comment": "Огурцы для консервации",
+    "amount": 2500,
+    "balance": 17000,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:13:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:13:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9280"
+    },
+    "date": {
+      "$date": "2021-11-11T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Образование",
+    "comment": "Запись на курсы макраме",
+    "amount": 1000,
+    "balance": 16000,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:14:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:14:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9281"
+    },
+    "date": {
+      "$date": "2021-11-12T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Товары для дома",
+    "comment": "Швабра",
+    "amount": 500,
+    "balance": 15500,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:15:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:15:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9282"
+    },
+    "date": {
+      "$date": "2021-11-12T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": false,
+    "type": "+",
+    "category": "Доход",
+    "comment": "Возврат долга (Вася)",
+    "amount": 1000,
+    "balance": 16500,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:16:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:16:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9283"
+    },
+    "date": {
+      "$date": "2021-11-12T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Образование",
+    "comment": "Сказка \"Колобок и колбэк\"",
+    "amount": 300,
+    "balance": 16200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:17:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:17:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9284"
+    },
+    "date": {
+      "$date": "2021-11-12T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Продукты",
+    "comment": "Мешок гречки",
+    "amount": 2000,
+    "balance": 14200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:18:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:18:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "618ef178bc781dec25bf9285"
+    },
+    "date": {
+      "$date": "2021-11-12T21:00:00Z"
+    },
+    "month": 11,
+    "year": 2021,
+    "isExpense": true,
+    "type": "-",
+    "category": "Машина",
+    "comment": "Цепь на выхлопную трубу",
+    "amount": 1000,
+    "balance": 13200,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:19:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:19:07.843Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "61930fc6271f5d8776d81ee4"
+    },
+    "date": {
+      "$date": "2020-11-10T22:00:00Z"
+    },
+    "month": 11,
+    "year": 2020,
+    "isExpense": true,
+    "category": "Другие расходы",
+    "comment": "Подарок жене",
+    "amount": 300,
+    "balanceAfter": 10000,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:20:22.805Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:20:22.805Z"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "61930ff3271f5d8776d81ee7"
+    },
+    "date": {
+      "$date": "2019-11-10T22:00:00Z"
+    },
+    "month": 11,
+    "year": 2019,
+    "isExpense": true,
+    "category": "Другие расходы",
+    "comment": "Подарок жене",
+    "amount": 300,
+    "balanceAfter": 10000,
+    "owner": {
+      "$oid": "61926c82988b2acf427aa27a"
+    },
+    "createdAt": {
+      "$date": "2021-11-16T01:21:07.843Z"
+    },
+    "updatedAt": {
+      "$date": "2021-11-16T01:21:07.843Z"
+    }
+  }
+]
