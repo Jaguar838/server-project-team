@@ -6,9 +6,16 @@ const transactionSchema = new Schema(
     date: {
       type: Date,
     },
-    isExpense: { type: Boolean, default: false },
+    month: {
+      type: Number,
+    },
+    year: {
+      type: Number,
+    },
+    isExpense: { type: Boolean, default: true },
     category: {
-      type: String,
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
     },
     comment: {
       type: String,
@@ -38,8 +45,6 @@ const transactionSchema = new Schema(
   },
 );
 
-<<<<<<< Updated upstream
-=======
 transactionSchema.virtual('type').get(function () {
   return this.isExpense ? '-' : '+';
 });
@@ -52,7 +57,6 @@ transactionSchema.virtual('date_str').get(function () {
   return `${dd}.${mm}.${yy}`;
 });
 
->>>>>>> Stashed changes
 transactionSchema.plugin(mongoosePaginate);
 
 const Transaction = model('transaction', transactionSchema);

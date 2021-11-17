@@ -1,7 +1,7 @@
 const Transaction = require('../model/transaction');
 
 const listTransactions = async (userId, query) => {
-  const { sortBy, sortByDesc, filter, page = 1, limit = 1e12 } = query;
+  const { sortBy = 'date', sortByDesc, filter, page = 1, limit = 1e12 } = query;
 
   const searchOptions = {};
   // TODO: uncomment and replace when auth issues are ready on frontend
@@ -15,10 +15,10 @@ const listTransactions = async (userId, query) => {
       ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
     },
     select: filter ? filter.split('|').join(' ') : '',
-    // populate: {
-    //   path: 'owner',
-    //   select: 'email balance createdAt updatedAt',
-    // },
+    populate: {
+      path: 'category',
+      select: 'name color',
+    },
   });
 
   const { docs: transactions, ...pageInfo } = results;
@@ -50,17 +50,18 @@ const updateTransaction = async (transactionId, body, userId) => {
 };
 
 const listTransactionStats = async (userId, month, year) => {
-  // TODO: complete this function
-  const allTransactions = await Transaction.find({});
-  const expenseStats = allTransactions.reduce(
-    (acc, { category, amount }) => ({
-      ...acc,
-      [category]: acc[category] ? acc[category] + amount : amount,
-    }),
-    {},
-  );
+  const allTransactions = await Transaction.find({ month, year });
 
-  return expenseStats;
+  const stats = allTransactions.reduce((acc, { category, amount }) => {
+    const id = category.toString();
+
+    return {
+      ...acc,
+      [id]: acc[id] ? acc[id] + amount : amount,
+    };
+  }, {});
+
+  return stats;
 };
 
 const updateBalanceForLaterTransactions = async ({ date, createdAt }) => {
