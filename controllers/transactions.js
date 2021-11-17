@@ -11,10 +11,12 @@ const getTransactions = async (req, res) => {
     req.query,
   );
 
+  const years = [...new Set(transactions.map(({ year }) => year))].sort();
+
   res.status(HttpCode.OK).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.OK,
-    data: { pageInfo, transactions },
+    data: { years, transactions, pageInfo },
   });
 };
 
@@ -74,27 +76,58 @@ const updateTransaction = async (req, res) => {
 
 const getTransactionStats = async (req, res) => {
   const userId = req?.user?._id; // TODO: replace ?.
-  const { month, year } = req.query;
 
-  const allCategories = await (
-    await Categories.listCategories()
-  ).map(({ name }) => name);
+  let month = Number(req.query.month);
+  let year = Number(req.query.year);
+  !month && year && (month = { $lte: 12 });
+  month || (month = new Date(Date.now()).getMonth() + 1);
+  year || (year = new Date(Date.now()).getFullYear());
+  // TODO: add using getTimezoneOffset()
+
+  const allCategories = await Categories.listCategories();
+
+  const expenseCategoriesIdList = allCategories
+    .filter(({ isExpense }) => isExpense)
+    .map(({ _id }) => _id.toString());
+  const incomeCategoriesIdList = allCategories
+    .filter(({ isExpense }) => !isExpense)
+    .map(({ _id }) => _id.toString());
+
   const userStats = await Transactions.listTransactionStats(
     userId,
     month,
     year,
   );
 
-  // TODO: process month and year parameters here
-  const finalStats = allCategories.reduce(
-    (acc, category) => ({ ...acc, [category]: userStats[category] || 0 }),
+  const expenseStats = expenseCategoriesIdList.reduce(
+    (acc, id) => ({ ...acc, [id]: userStats[id] || 0 }),
     {},
   );
+  const incomeStats = incomeCategoriesIdList.reduce(
+    (acc, id) => ({ ...acc, [id]: userStats[id] || 0 }),
+    {},
+  );
+
+  const totalExpenseAmount = Object.values(expenseStats).reduce(
+    (acc, amount) => acc + amount,
+  );
+  const totalIncomeAmount = Object.values(incomeStats).reduce(
+    (acc, amount) => acc + amount,
+  );
+
+  const summary = {
+    expenseStats: Object.entries(expenseStats).map(([categoryId, amount]) => ({
+      categoryId,
+      amount,
+    })),
+    expenses: totalExpenseAmount,
+    incomes: totalIncomeAmount,
+  };
 
   res.status(HttpCode.OK).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.OK,
-    data: finalStats,
+    data: summary,
   });
 };
 
