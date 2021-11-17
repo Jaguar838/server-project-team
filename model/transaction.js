@@ -52,9 +52,9 @@ transactionSchema.virtual('type').get(function () {
 transactionSchema.virtual('date_str').get(function () {
   const dd = this.date.getDate();
   const mm = this.date.getMonth() + 1;
-  const yyyy = this.date.getFullYear();
+  const yy = this.date.getFullYear() % 100;
 
-  return `${dd}.${mm}.${yyyy}`;
+  return `${dd}.${mm}.${yy}`;
 });
 
 transactionSchema.plugin(mongoosePaginate);
