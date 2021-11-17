@@ -8,7 +8,7 @@ class EmailService {
         this.link = 'https://61f2-213-109-141-89.ngrok.io';
         break;
       case 'production':
-        this.link = process.env.BACKEND_LINK;
+        this.link = process.env.FRONTEND_LINK;
         break;
       default:
         this.link = process.env.LOCALHOST;

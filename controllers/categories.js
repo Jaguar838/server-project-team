@@ -6,10 +6,13 @@ const { CustomError } = require('../helpers/customError');
 const getCategories = async (req, res) => {
   const data = await Categories.listCategories();
 
+  const expenses = data.filter(({ isExpense }) => isExpense);
+  const incomes = data.filter(({ isExpense }) => !isExpense);
+
   res.status(HttpCode.OK).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.OK,
-    data: [...data],
+    data: { expenses, incomes },
   });
 };
 

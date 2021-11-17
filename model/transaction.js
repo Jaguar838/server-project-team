@@ -6,9 +6,16 @@ const transactionSchema = new Schema(
     date: {
       type: Date,
     },
-    isExpense: { type: Boolean, default: false },
+    month: {
+      type: Number,
+    },
+    year: {
+      type: Number,
+    },
+    isExpense: { type: Boolean, default: true },
     category: {
-      type: String,
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
     },
     comment: {
       type: String,
@@ -37,6 +44,18 @@ const transactionSchema = new Schema(
     },
   },
 );
+
+transactionSchema.virtual('type').get(function () {
+  return this.isExpense ? '-' : '+';
+});
+
+transactionSchema.virtual('date_str').get(function () {
+  const dd = this.date.getDate();
+  const mm = this.date.getMonth() + 1;
+  const yyyy = this.date.getFullYear();
+
+  return `${dd}.${mm}.${yyyy}`;
+});
 
 transactionSchema.plugin(mongoosePaginate);
 
