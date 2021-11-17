@@ -20,8 +20,8 @@ const { validateRegistration, validateLogin } = require('./validation');
 
 router.post('/signup', validateRegistration, wrapError(registration));
 
-// Установка лимита на логин с одного IP(3р в течение часа)
-router.post('/login', loginLimit, validateLogin, wrapError(login));
+// Установка лимита на логин с одного IP(3р в течение часа)loginLimit,
+router.post('/login', validateLogin, wrapError(login));
 
 router.post('/logout', guard, wrapError(logout));
 router.get('/current', guard, wrapError(current));
