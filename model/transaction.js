@@ -38,6 +38,21 @@ const transactionSchema = new Schema(
   },
 );
 
+<<<<<<< Updated upstream
+=======
+transactionSchema.virtual('type').get(function () {
+  return this.isExpense ? '-' : '+';
+});
+
+transactionSchema.virtual('date_str').get(function () {
+  const dd = this.date.getDate();
+  const mm = this.date.getMonth() + 1;
+  const yy = this.date.getFullYear() % 100;
+
+  return `${dd}.${mm}.${yy}`;
+});
+
+>>>>>>> Stashed changes
 transactionSchema.plugin(mongoosePaginate);
 
 const Transaction = model('transaction', transactionSchema);
