@@ -202,6 +202,8 @@
                       "type": "object",
                       "description": "response data",
                       "example": {
+                        "email": "example@email.com",
+                        "name": "My Name",
                         "token": "token_123qwe456rty"
                       }
                     }
