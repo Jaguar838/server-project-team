@@ -5,7 +5,7 @@ const { HttpCode, ResponseStatus } = require('../config/constants');
 const { CustomError } = require('../helpers/customError');
 
 const getTransactions = async (req, res) => {
-  const userId = req?.user?._id; // TODO: replace ?.
+  const userId = req.user._id;
   const { pageInfo, transactions } = await Transactions.listTransactions(
     userId,
     req.query,
@@ -22,10 +22,20 @@ const getTransactions = async (req, res) => {
 
 const saveTransaction = async (req, res) => {
   const userId = req.user._id;
+
+  const date = new Date(req.body.date);
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const { isExpense } = Categories.getCategoryById(req.body.category);
+
   const balanceAfter = 10000.0; // TODO: add calculation of balance after transaction
 
-  const transaction = await Transactions.addTransaction({
+  const newBalance = await Transactions.addTransaction({
     ...req.body,
+    month,
+    year,
+    isExpense,
     balanceAfter,
     owner: userId,
   });
@@ -33,7 +43,7 @@ const saveTransaction = async (req, res) => {
   res.status(HttpCode.CREATED).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.CREATED,
-    data: { transaction },
+    data: { balance: newBalance }, // TODO: add calculation of balance after transaction
   });
 };
 
@@ -75,7 +85,7 @@ const updateTransaction = async (req, res) => {
 };
 
 const getTransactionStats = async (req, res) => {
-  const userId = req?.user?._id; // TODO: replace ?.
+  const userId = req.user._id;
 
   let month = Number(req.query.month);
   let year = Number(req.query.year);
