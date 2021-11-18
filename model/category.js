@@ -5,6 +5,10 @@ const categorySchema = new Schema(
     name: { type: String },
     color: { type: String },
     isExpense: { type: Boolean, default: true },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
+    },
   },
   {
     versionKey: false,
