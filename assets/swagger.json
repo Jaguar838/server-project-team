@@ -204,6 +204,7 @@
                       "example": {
                         "email": "example@email.com",
                         "name": "My Name",
+                        "balance": 10000,
                         "token": "token_123qwe456rty"
                       }
                     }
