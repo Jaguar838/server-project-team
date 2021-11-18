@@ -2,14 +2,19 @@ const express = require('express');
 const router = express.Router();
 
 const ctrlTransactions = require('../../controllers/transactions');
-// const {} = require('./validation');  // TODO: add server-side validation
+const { validateSaveTransaction } = require('./validation');
 
 const guard = require('../../helpers/guard');
 const wrapError = require('../../helpers/errorHandler');
 
 router.get('/', guard, wrapError(ctrlTransactions.getTransactions));
 
-router.post('/', guard, wrapError(ctrlTransactions.saveTransaction));
+router.post(
+  '/',
+  guard,
+  validateSaveTransaction,
+  wrapError(ctrlTransactions.saveTransaction),
+);
 
 router.patch(
   '/:transactionId',

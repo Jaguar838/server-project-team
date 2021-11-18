@@ -1,4 +1,5 @@
 const Transaction = require('../model/transaction');
+const Users = require('./users');
 
 const listTransactions = async (userId, query) => {
   const { sortBy = 'date', sortByDesc, filter, page = 1, limit = 1e12 } = query;
@@ -26,9 +27,12 @@ const listTransactions = async (userId, query) => {
 };
 
 const addTransaction = async body => {
-  const result = await Transaction.create(body);
-  await updateBalanceForLaterTransactions(result); //
-  return result;
+  await Transaction.create(body);
+  await updateBalanceForLaterTransactions(body.date);
+
+  const newBalance = (await Users.findById(body.owner)).balance;
+
+  return newBalance;
 };
 
 const removeTransaction = async (transactionId, userId) => {

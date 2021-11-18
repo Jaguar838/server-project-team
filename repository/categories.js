@@ -5,6 +5,19 @@ const listCategories = async () => {
   return results;
 };
 
+const getCategoryById = async categoryId => {
+  // console.log();
+  // console.log('-----------------------');
+  // console.log(categoryId);
+  // console.log('-----------------------');
+  // console.log();
+
+  // categoryId = categoryId.toString();
+  const result = await Category.findById(categoryId);
+  return result;
+};
+
 module.exports = {
   listCategories,
+  getCategoryById,
 };
