@@ -27,7 +27,7 @@ app.get('env') !== 'test' && app.use(logger(formatsLogger));
 // Настройки для локалхоста
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://forward-sharks.netlify.app'],
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
