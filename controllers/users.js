@@ -65,7 +65,7 @@ const login = async (req, res) => {
 
   const id = user._id;
   const payload = { id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '240h' });
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2h' });
   await Users.updateToken(id, token);
 
   const { name, balance } = user;
