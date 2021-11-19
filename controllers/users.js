@@ -60,7 +60,10 @@ const login = async (req, res) => {
   }
 
   if (!user?.isVerified) {
-    throw new CustomError(HttpCode.UNAUTHORIZED, 'User email not verified yet');
+    throw new CustomError(
+      HttpCode.UNAUTHORIZED,
+      'User email not verified yet.',
+    );
   }
 
   const id = user._id;
@@ -100,6 +103,7 @@ const current = async (req, res) => {
         // user,
         id: user.id,
         email: user.email,
+        name: user.name,
         balance: user.balance,
         avatar: user.avatar,
       },
@@ -150,14 +154,25 @@ const uploadAvatar = async (req, res) => {
 const verifyUser = async (req, res) => {
   const user = await Users.findUserByVerifyToken(req.params.token);
   if (user) {
+    const id = user._id;
+
     await Users.updateTokenVerify(user._id, true, null);
-    return res.status(HttpCode.OK).json({
-      status: 'success',
-      code: HttpCode.OK,
-      data: {
-        message: 'Verification successful!',
-      },
-    });
+
+    const payload = { id };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '240h' });
+    await Users.updateToken(id, token);
+
+    const redirectURL = `${process.env.FRONTEND_LINK}/login/${token}`;
+
+    return res.redirect(redirectURL);
+
+    // return res.status(HttpCode.OK).json({
+    //   status: 'success',
+    //   code: HttpCode.OK,
+    //   data: {
+    //     message: 'Verification successful!',
+    //   },
+    // });
   }
   return res.status(HttpCode.BAD_REQUEST).json({
     status: 'error',
