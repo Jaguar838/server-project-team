@@ -1,20 +1,25 @@
-const User = require("../model/user");
+const User = require('../model/user');
 
-const create = async (options) => {
+const create = async options => {
   const user = new User(options);
   return await user.save();
 };
 
-const findById = async (id) => {
+const findById = async id => {
   return await User.findById(id);
 };
 
-const findByEmail = async (email) => {
+const findByEmail = async email => {
   return await User.findOne({ email });
 };
 
-const findUserByVerifyToken = async (verifyTokenEmail) => {
+const findUserByVerifyToken = async verifyTokenEmail => {
   return await User.findOne({ verifyTokenEmail });
+};
+
+const updateBalance = async (id, balance) => {
+  console.log(id, balance);
+  return await User.updateOne({ _id: id }, { balance });
 };
 
 const updateToken = async (id, token) => {
@@ -35,6 +40,7 @@ module.exports = {
   create,
   updateToken,
   updateAvatar,
+  updateBalance,
   updateTokenVerify,
   findUserByVerifyToken,
 };
