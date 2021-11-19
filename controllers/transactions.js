@@ -23,15 +23,13 @@ const getTransactions = async (req, res) => {
 const saveTransaction = async (req, res) => {
   const userId = req.user._id;
 
-  const date = new Date(req.body.date);
-  const month = date.getMonth() + 1;
-  const year = date.getFullYear();
+  const transactionDate = new Date(req.body.date);
+  const month = transactionDate.getMonth() + 1;
+  const year = transactionDate.getFullYear();
+  const { isExpense } = await Categories.getCategoryById(req.body.category);
+  const balanceAfter = 0;
 
-  const { isExpense } = Categories.getCategoryById(req.body.category);
-
-  const balanceAfter = 10000.0; // TODO: add calculation of balance after transaction
-
-  const newBalance = await Transactions.addTransaction({
+  const { newBalance, transaction } = await Transactions.addTransaction({
     ...req.body,
     month,
     year,
@@ -43,7 +41,7 @@ const saveTransaction = async (req, res) => {
   res.status(HttpCode.CREATED).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.CREATED,
-    data: { balance: newBalance }, // TODO: add calculation of balance after transaction
+    data: { balance: newBalance, transaction },
   });
 };
 
