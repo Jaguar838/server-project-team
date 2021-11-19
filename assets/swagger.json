@@ -262,7 +262,7 @@
                     "message": {
                       "type": "string",
                       "description": "response message",
-                      "example": "Invalid credentials"
+                      "example": "Invalid credentials | User email not verified yet"
                     }
                   }
                 }

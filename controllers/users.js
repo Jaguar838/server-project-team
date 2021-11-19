@@ -60,7 +60,10 @@ const login = async (req, res) => {
   }
 
   if (!user?.isVerified) {
-    throw new CustomError(HttpCode.UNAUTHORIZED, 'User email not verified yet');
+    throw new CustomError(
+      HttpCode.UNAUTHORIZED,
+      'User email not verified yet.',
+    );
   }
 
   const id = user._id;
@@ -100,6 +103,7 @@ const current = async (req, res) => {
         // user,
         id: user.id,
         email: user.email,
+        name: user.name,
         balance: user.balance,
         avatar: user.avatar,
       },
