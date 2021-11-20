@@ -10,11 +10,23 @@ const listTransactions = async (userId, query) => {
     page,
     sort: {
       ...(!sortBy && !sortByDesc ? { date: 1 } : {}),
-      ...(sortBy ? { [`${sortBy}`]: 1 } : {}),
-      ...(sortByDesc ? { [`${sortByDesc}`]: -1 } : {}),
-      createdAt: 1,
+
+      ...(sortBy
+        ? sortBy.split`|`.reduce((acc, item) => ({ ...acc, [item]: 1 }), {})
+        : {}),
+
+      ...(sortByDesc
+        ? sortByDesc.split`|`.reduce(
+            (acc, item) => ({ ...acc, [item]: -1 }),
+            {},
+          )
+        : {}),
+
+      ...(!sortBy?.includes('createdAt') && !sortByDesc?.includes('createdAt')
+        ? { createdAt: 1 }
+        : {}),
     },
-    select: filter ? filter.split('|').join(' ') : '',
+    select: filter ? filter.split`|`.join` ` : '',
     populate: {
       path: 'category',
       select: 'name color',
@@ -24,6 +36,15 @@ const listTransactions = async (userId, query) => {
   const { docs: transactions, ...pageInfo } = results;
 
   return { pageInfo, transactions };
+};
+
+const getTransactionById = async (transactionId, userId) => {
+  const result = await Transaction.findOne({
+    _id: transactionId,
+    owner: userId,
+  });
+
+  return result;
 };
 
 const addTransaction = async details => {
@@ -39,21 +60,49 @@ const addTransaction = async details => {
   details.balanceAfter =
     (latestPrevTransaction?.balanceAfter || 0) + amountChange;
 
-  const newTransaction = await Transaction.create(details);
+  await Transaction.create(details);
   await updateBalanceForTransactions(laterTransactions, amountChange);
 
   const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
   await Users.updateBalance(userId, newUserBalance);
 
-  return { newBalance: newUserBalance, transaction: newTransaction };
+  const { transactions: updatedTransactions } = await listTransactions(userId, {
+    sortByDesc: 'date|createdAt',
+  });
+
+  return { newBalance: newUserBalance, transactions: updatedTransactions };
 };
 
 const removeTransaction = async (transactionId, userId) => {
-  const result = await Transaction.findOneAndRemove({
+  const transactionToDelete = await Transaction.findOne({
     _id: transactionId,
     owner: userId,
   });
-  return result;
+  if (!transactionToDelete) return null;
+
+  const { date, createdAt, amount, isExpense } = transactionToDelete;
+
+  const { transactions } = await listTransactions(userId, {});
+  const lastTransaction = findLastTransaction(transactions);
+  const laterTransactions = findLaterTransactions(
+    transactions,
+    date,
+    createdAt,
+  );
+
+  const amountChange = -1 * amount * (isExpense ? -1 : 1);
+
+  await Transaction.findByIdAndRemove(transactionId);
+  await updateBalanceForTransactions(laterTransactions, amountChange);
+
+  const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
+  await Users.updateBalance(userId, newUserBalance);
+
+  const { transactions: updatedTransactions } = await listTransactions(userId, {
+    sortByDesc: 'date|createdAt',
+  });
+
+  return { newBalance: newUserBalance, transactions: updatedTransactions };
 };
 
 const updateTransaction = async (transactionId, body, userId) => {
@@ -62,6 +111,7 @@ const updateTransaction = async (transactionId, body, userId) => {
     { ...body },
     { new: true },
   );
+
   return result;
 };
 
@@ -85,11 +135,7 @@ const listTransactionStats = async (userId, month, year) => {
 };
 
 const updateBalanceForTransactions = async (transactions, amount) => {
-  console.log(transactions);
-  await transactions.forEach(async ({ _id, balanceAfter }, idx) => {
-    console.log(idx, balanceAfter, _id);
-    console.log('   ', balanceAfter + amount);
-
+  await transactions.forEach(async ({ _id, balanceAfter }) => {
     await Transaction.findOneAndUpdate(
       { _id },
       { balanceAfter: balanceAfter + amount },
@@ -98,11 +144,13 @@ const updateBalanceForTransactions = async (transactions, amount) => {
 };
 
 const findLastTransaction = transactions => {
-  return transactions.reduce((acc, transaction) =>
-    transaction.date > acc.date ||
-    (transaction.date >= acc.date && transaction.createdAt > acc.createdAt)
-      ? transaction
-      : acc,
+  return transactions.reduce(
+    (acc, transaction) =>
+      transaction.date > acc.date ||
+      (transaction.date >= acc.date && transaction.createdAt > acc.createdAt)
+        ? transaction
+        : acc,
+    { date: 0, createdAt: 0 },
   );
 };
 
@@ -139,6 +187,7 @@ const findLaterTransactions = (transactions, date, createdAt = new Date()) => {
 
 module.exports = {
   listTransactions,
+  getTransactionById,
   addTransaction,
   removeTransaction,
   updateTransaction,
