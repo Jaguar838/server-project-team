@@ -18,7 +18,6 @@ const findUserByVerifyToken = async verifyTokenEmail => {
 };
 
 const updateBalance = async (id, balance) => {
-  console.log(id, balance);
   return await User.updateOne({ _id: id }, { balance });
 };
 

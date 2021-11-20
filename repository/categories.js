@@ -7,7 +7,7 @@ const listCategories = async () => {
 
 const getCategoryById = async categoryId => {
   const result = await Category.findById(categoryId);
-  console.log('result', result);
+
   return result;
 };
 

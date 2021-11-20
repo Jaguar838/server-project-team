@@ -162,7 +162,7 @@ const verifyUser = async (req, res) => {
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '240h' });
     await Users.updateToken(id, token);
 
-    const redirectURL = `${process.env.FRONTEND_LINK}/login/${token}`;
+    const redirectURL = `${process.env.FRONTEND_LINK}/login`;
 
     return res.redirect(redirectURL);
 
