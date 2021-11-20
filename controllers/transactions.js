@@ -29,7 +29,7 @@ const saveTransaction = async (req, res) => {
   const { isExpense } = await Categories.getCategoryById(req.body.category);
   const balanceAfter = 0;
 
-  const { newBalance, transaction } = await Transactions.addTransaction({
+  const { newBalance, transactions } = await Transactions.addTransaction({
     ...req.body,
     month,
     year,
@@ -41,12 +41,13 @@ const saveTransaction = async (req, res) => {
   res.status(HttpCode.CREATED).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.CREATED,
-    data: { balance: newBalance, transaction },
+    data: { balance: newBalance, transactions },
   });
 };
 
 const removeTransaction = async (req, res) => {
   const userId = req.user._id;
+
   const transaction = await Transactions.removeTransaction(
     req.params.transactionId,
     userId,
