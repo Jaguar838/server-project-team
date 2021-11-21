@@ -71,7 +71,7 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '240h' });
   await Users.updateToken(id, token);
 
-  const { name, balance } = user;
+  const { name, balance, avatar } = user;
 
   return res.status(HttpCode.OK).json({
     status: 'success',
@@ -81,6 +81,7 @@ const login = async (req, res) => {
       name,
       balance,
       token,
+      avatar,
     },
   });
 };
@@ -174,11 +175,8 @@ const verifyUser = async (req, res) => {
     //   },
     // });
   }
-  return res.status(HttpCode.BAD_REQUEST).json({
-    status: 'error',
-    code: HttpCode.BAD_REQUEST,
-    message: 'Invalid token',
-  });
+
+  throw new CustomError(HttpCode.BAD_REQUEST, 'Invalid token');
 };
 
 // Controllers repeat email  for verify User
