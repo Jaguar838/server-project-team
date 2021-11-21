@@ -608,7 +608,7 @@
           {
             "name": "page",
             "in": "query",
-            "description": "number of pages for transations output",
+            "description": "number of pages for transactions output",
             "required": false,
             "schema": {
               "type": "number"
@@ -617,7 +617,7 @@
           {
             "name": "sortBy",
             "in": "query",
-            "description": "fields for ascending sorting separated by |",
+            "description": "fields for ascending sorting separated by '|'",
             "required": false,
             "schema": {
               "type": "string"
@@ -626,7 +626,7 @@
           {
             "name": "sortByDesc",
             "in": "query",
-            "description": "fields for ascending sorting separated by |",
+            "description": "fields for ascending sorting separated by '|'",
             "required": false,
             "schema": {
               "type": "string"
