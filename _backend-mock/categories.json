@@ -1,11 +1,85 @@
 [
-  { "name": "Основные расходы", "color": "#fed057" },
-  { "name": "Продукты", "color": "#ffd8d0" },
-  { "name": "Машина", "color": "#fd9498" },
-  { "name": "Забота о себе", "color": "#c5baff" },
-  { "name": "Забота о детях", "color": "#6e78e8" },
-  { "name": "Товары для дома", "color": "#4a56e2" },
-  { "name": "Образование", "color": "#81e1ff" },
-  { "name": "Досуг", "color": "#24cca7" },
-  { "name": "Другие расходы", "color": "#00ad84" }
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9bc"
+    },
+    "name": "Основные расходы",
+    "color": "#fed057",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9bd"
+    },
+    "name": "Продукты",
+    "color": "#ffd8d0",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9be"
+    },
+    "name": "Машина",
+    "color": "#fd9498",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9bf"
+    },
+    "name": "Забота о себе",
+    "color": "#c5baff",
+    "isExpense": true
+  },
+
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9c0"
+    },
+    "name": "Забота о детях",
+    "color": "#6e78e8",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9c1"
+    },
+    "name": "Товары для дома",
+    "color": "#4a56e2",
+    "isExpense": true
+  },
+
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9c2"
+    },
+    "name": "Образование",
+    "color": "#81e1ff",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9c3"
+    },
+    "name": "Досуг",
+    "color": "#24cca7",
+    "isExpense": true
+  },
+  {
+    "_id": {
+      "$oid": "6191e4049b0647adbd4ba9c4"
+    },
+    "name": "Другие расходы",
+    "color": "#00ad84",
+    "isExpense": true
+  },
+
+  {
+    "_id": {
+      "$oid": "61940b5cd6d3f6d8aa3677bf"
+    },
+    "name": "Доход",
+    "color": "",
+    "isExpense": false
+  }
 ]

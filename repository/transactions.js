@@ -92,7 +92,7 @@ const removeTransaction = async (transactionId, userId) => {
 
   const amountChange = -1 * amount * (isExpense ? -1 : 1);
 
-  await Transaction.findByIdAndRemove(transactionId);
+  const deletedTransaction = await Transaction.findByIdAndRemove(transactionId);
   await updateBalanceForTransactions(laterTransactions, amountChange);
 
   const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
@@ -102,17 +102,31 @@ const removeTransaction = async (transactionId, userId) => {
     sortByDesc: 'date|createdAt',
   });
 
-  return { newBalance: newUserBalance, transactions: updatedTransactions };
+  return {
+    newBalance: newUserBalance,
+    transactions: updatedTransactions,
+    deletedTransaction,
+  };
 };
 
 const updateTransaction = async (transactionId, body, userId) => {
-  const result = await Transaction.findOneAndUpdate(
+  const updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: transactionId, owner: userId },
     { ...body },
     { new: true },
   );
 
-  return result;
+  const newUserBalance = 1;
+
+  const { transactions: updatedTransactions } = await listTransactions(userId, {
+    sortByDesc: 'date|createdAt',
+  });
+
+  return {
+    newBalance: newUserBalance,
+    updatedTransaction,
+    transactions: updatedTransactions,
+  };
 };
 
 const listTransactionStats = async (userId, month, year) => {
