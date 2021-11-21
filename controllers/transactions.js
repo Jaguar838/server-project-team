@@ -48,17 +48,18 @@ const saveTransaction = async (req, res) => {
 const removeTransaction = async (req, res) => {
   const userId = req.user._id;
 
-  const transaction = await Transactions.removeTransaction(
+  const result = await Transactions.removeTransaction(
     req.params.transactionId,
     userId,
   );
 
-  if (transaction) {
+  if (result) {
+    const { newBalance, deletedTransaction, transactions } = result;
+
     return res.status(HttpCode.OK).json({
       status: ResponseStatus.SUCCESS,
       code: HttpCode.OK,
-      message: 'Deleted',
-      data: { transaction },
+      data: { newBalance, deleted: deletedTransaction, transactions },
     });
   }
 
@@ -67,19 +68,23 @@ const removeTransaction = async (req, res) => {
 
 const updateTransaction = async (req, res) => {
   const userId = req.user._id;
-  const transaction = await Transactions.updateTransaction(
+
+  const result = await Transactions.updateTransaction(
     req.params.transactionId,
     req.body,
     userId,
   );
 
-  if (transaction) {
+  const { newBalance, updatedTransaction, transactions } = result;
+
+  if (updatedTransaction) {
     return res.status(HttpCode.OK).json({
       status: ResponseStatus.SUCCESS,
       code: HttpCode.OK,
-      data: { transaction },
+      data: { newBalance, transactions },
     });
   }
+
   throw new CustomError(HttpCode.NOT_FOUND, 'Not found');
 };
 
