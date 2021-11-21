@@ -10,13 +10,17 @@ const {
   login,
   logout,
   current,
-  update,
+  updateUser,
   uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
 } = require('../../controllers/users');
 
-const { validateRegistration, validateLogin } = require('./validation');
+const {
+  validateRegistration,
+  validateLogin,
+  validateUserPatch,
+} = require('./validation');
 
 router.post('/signup', validateRegistration, wrapError(registration));
 
@@ -25,6 +29,8 @@ router.post('/login', validateLogin, wrapError(login));
 
 router.post('/logout', guard, wrapError(logout));
 router.get('/current', guard, wrapError(current));
+
+router.patch('/', guard, validateUserPatch, wrapError(updateUser));
 
 // Загрузка avatar
 router.patch(
