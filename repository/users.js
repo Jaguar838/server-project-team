@@ -17,6 +17,10 @@ const findUserByVerifyToken = async verifyTokenEmail => {
   return await User.findOne({ verifyTokenEmail });
 };
 
+const update = async (id, body) => {
+  return await User.findOneAndUpdate({ _id: id }, { ...body }, { new: true });
+};
+
 const updateBalance = async (id, balance) => {
   return await User.updateOne({ _id: id }, { balance });
 };
@@ -37,6 +41,7 @@ module.exports = {
   findById,
   findByEmail,
   create,
+  update,
   updateToken,
   updateAvatar,
   updateBalance,

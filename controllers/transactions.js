@@ -75,13 +75,17 @@ const updateTransaction = async (req, res) => {
     userId,
   );
 
+  if (!result) {
+    throw new CustomError(HttpCode.NOT_FOUND, 'Not found');
+  }
+
   const { newBalance, updatedTransaction, transactions } = result;
 
   if (updatedTransaction) {
     return res.status(HttpCode.OK).json({
       status: ResponseStatus.SUCCESS,
       code: HttpCode.OK,
-      data: { newBalance, transactions },
+      data: { newBalance, updatedTransaction, transactions },
     });
   }
 

@@ -110,13 +110,48 @@ const removeTransaction = async (transactionId, userId) => {
 };
 
 const updateTransaction = async (transactionId, body, userId) => {
+  console.log('Hi, there!!!');
+
+  const transactionToUpdate = await Transaction.findOne({
+    _id: transactionId,
+    owner: userId,
+  });
+  if (!transactionToUpdate) return null;
+
+  const { date, createdAt } = transactionToUpdate;
+
+  const { transactions } = await listTransactions(userId, {});
+  const lastTransaction = findLastTransaction(transactions);
+  const laterTransactions = findLaterTransactions(
+    transactions,
+    date,
+    createdAt,
+  );
+  laterTransactions.push(transactionToUpdate);
+
   const updatedTransaction = await Transaction.findOneAndUpdate(
     { _id: transactionId, owner: userId },
     { ...body },
     { new: true },
   );
 
-  const newUserBalance = 1;
+  const { amount, isExpense } = transactionToUpdate;
+  const { amount: NewAmount, isExpense: newIsExpense } = updatedTransaction;
+  const oldAmount = amount * (isExpense ? -1 : 1);
+  const newAmount = NewAmount * (newIsExpense ? -1 : 1);
+  const amountChange = newAmount - oldAmount;
+
+  const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
+
+  console.log('Hi, here!');
+  console.log(oldAmount);
+  console.log(newAmount);
+  console.log(amountChange);
+
+  if (amountChange) {
+    await updateBalanceForTransactions(laterTransactions, amountChange);
+    await Users.updateBalance(userId, newUserBalance);
+  }
 
   const { transactions: updatedTransactions } = await listTransactions(userId, {
     sortByDesc: 'date|createdAt',
