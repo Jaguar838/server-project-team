@@ -539,6 +539,157 @@
       }
     },
 
+    "/api/users": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Update user data",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "My New Name",
+                    "description": "name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "newexample@email.com",
+                    "description": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "success"
+                    },
+                    "code": {
+                      "type": "number",
+                      "description": "response code",
+                      "example": "200"
+                    },
+                    "data": {
+                      "type": "object",
+                      "description": "response data",
+                      "example": {
+                        "email": "example@email.com",
+                        "name": "My Name",
+                        "balance": 10000,
+
+                        "avatar": "https://path/to/avatar"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "number",
+                      "description": "response code",
+                      "example": "400"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "number",
+                      "description": "response code",
+                      "example": "401"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Invalid credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "409": {
+            "description": "Conflict (email is already in use)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "response status",
+                      "example": "error"
+                    },
+                    "code": {
+                      "type": "number",
+                      "description": "response code",
+                      "example": "409"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "response message",
+                      "example": "Email is already in use"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/api/users/avatar": {
       "patch": {
         "tags": ["Users"],

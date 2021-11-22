@@ -113,19 +113,31 @@ const current = async (req, res) => {
   throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 };
 
-const update = async (req, res) => {
+const updateUser = async (req, res) => {
   const userId = req.user._id;
-  const user = await Users.updateSubscription(userId, req.body);
+
+  if (req.body.email && req.body.email !== req.user.email) {
+    const userWithEmail = await Users.findByEmail(req.body.email);
+
+    if (userWithEmail)
+      throw new CustomError(HttpCode.CONFLICT, 'Email already in use');
+  }
+
+  const user = await Users.update(userId, req.body);
+
   if (user) {
     return res.status(HttpCode.OK).json({
       status: 'success',
       code: HttpCode.OK,
       data: {
         email: user.email,
-        subscription: user.subscription,
+        name: user.name,
+        balance: user.balance,
+        avatar: user.avatar,
       },
     });
   }
+
   throw new CustomError(HttpCode.NOT_FOUND, 'Not Found');
 };
 
@@ -220,7 +232,7 @@ module.exports = {
   login,
   logout,
   current,
-  update,
+  updateUser,
   uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
