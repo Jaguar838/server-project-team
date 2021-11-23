@@ -29,19 +29,23 @@ const saveTransaction = async (req, res) => {
   const { isExpense } = await Categories.getCategoryById(req.body.category);
   const balanceAfter = 0;
 
-  const { newBalance, transactions } = await Transactions.addTransaction({
-    ...req.body,
-    month,
-    year,
-    isExpense,
-    balanceAfter,
-    owner: userId,
-  });
+  const { newBalance, transactions, pageInfo } =
+    await Transactions.addTransaction(
+      {
+        ...req.body,
+        month,
+        year,
+        isExpense,
+        balanceAfter,
+        owner: userId,
+      },
+      req.query,
+    );
 
   res.status(HttpCode.CREATED).json({
     status: ResponseStatus.SUCCESS,
     code: HttpCode.CREATED,
-    data: { balance: newBalance, transactions },
+    data: { balance: newBalance, transactions, pageInfo },
   });
 };
 
@@ -51,15 +55,16 @@ const removeTransaction = async (req, res) => {
   const result = await Transactions.removeTransaction(
     req.params.transactionId,
     userId,
+    req.query,
   );
 
   if (result) {
-    const { newBalance, deletedTransaction, transactions } = result;
+    const { newBalance, deletedTransaction, transactions, pageInfo } = result;
 
     return res.status(HttpCode.OK).json({
       status: ResponseStatus.SUCCESS,
       code: HttpCode.OK,
-      data: { newBalance, deleted: deletedTransaction, transactions },
+      data: { newBalance, deleted: deletedTransaction, transactions, pageInfo },
     });
   }
 
@@ -73,19 +78,20 @@ const updateTransaction = async (req, res) => {
     req.params.transactionId,
     req.body,
     userId,
+    req.query,
   );
 
   if (!result) {
     throw new CustomError(HttpCode.NOT_FOUND, 'Not found');
   }
 
-  const { newBalance, updatedTransaction, transactions } = result;
+  const { newBalance, updatedTransaction, transactions, pageInfo } = result;
 
   if (updatedTransaction) {
     return res.status(HttpCode.OK).json({
       status: ResponseStatus.SUCCESS,
       code: HttpCode.OK,
-      data: { newBalance, updatedTransaction, transactions },
+      data: { newBalance, updatedTransaction, transactions, pageInfo },
     });
   }
 

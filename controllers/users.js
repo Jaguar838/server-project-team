@@ -48,12 +48,19 @@ const registration = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+
+  console.log('email', email);
+  console.log('password', password);
+
   const user = await Users.findByEmail(email);
   const isValidPassword = await user?.isValidPassword(password);
   // Возвращаем ошибку если пользователь:
   // 1) не сущ. в db;
   // 2) ввел не валидный пароль;
   // 3) состояние isVerified = false.
+
+  console.log('user', user);
+  console.log(isValidPassword);
 
   if (!user || !isValidPassword) {
     throw new CustomError(HttpCode.UNAUTHORIZED, 'Invalid credentials');
