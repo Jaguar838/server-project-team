@@ -48,7 +48,7 @@ const getTransactionById = async (transactionId, userId) => {
   return result;
 };
 
-const addTransaction = async details => {
+const addTransaction = async (details, query) => {
   const { owner: userId, date, amount, isExpense } = details;
 
   const { transactions } = await listTransactions(userId, {});
@@ -67,14 +67,17 @@ const addTransaction = async details => {
   const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
   await Users.updateBalance(userId, newUserBalance);
 
-  const { transactions: updatedTransactions } = await listTransactions(userId, {
-    sortByDesc: 'date|createdAt',
-  });
+  const { transactions: updatedTransactions, pageInfo } =
+    await listTransactions(userId, query);
 
-  return { newBalance: newUserBalance, transactions: updatedTransactions };
+  return {
+    newBalance: newUserBalance,
+    transactions: updatedTransactions,
+    pageInfo,
+  };
 };
 
-const removeTransaction = async (transactionId, userId) => {
+const removeTransaction = async (transactionId, userId, query) => {
   const transactionToDelete = await Transaction.findOne({
     _id: transactionId,
     owner: userId,
@@ -99,18 +102,18 @@ const removeTransaction = async (transactionId, userId) => {
   const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
   await Users.updateBalance(userId, newUserBalance);
 
-  const { transactions: updatedTransactions } = await listTransactions(userId, {
-    sortByDesc: 'date|createdAt',
-  });
+  const { transactions: updatedTransactions, pageInfo } =
+    await listTransactions(userId, query);
 
   return {
     newBalance: newUserBalance,
     transactions: updatedTransactions,
     deletedTransaction,
+    pageInfo,
   };
 };
 
-const updateTransaction = async (transactionId, body, userId) => {
+const updateTransaction = async (transactionId, body, userId, query) => {
   const transactionToUpdate = await Transaction.findOne({
     _id: transactionId,
     owner: userId,
@@ -147,14 +150,14 @@ const updateTransaction = async (transactionId, body, userId) => {
     await Users.updateBalance(userId, newUserBalance);
   }
 
-  const { transactions: updatedTransactions } = await listTransactions(userId, {
-    sortByDesc: 'date|createdAt',
-  });
+  const { transactions: updatedTransactions, pageInfo } =
+    await listTransactions(userId, query);
 
   return {
     newBalance: newUserBalance,
     updatedTransaction,
     transactions: updatedTransactions,
+    pageInfo,
   };
 };
 
