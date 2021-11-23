@@ -16,7 +16,7 @@ class CreateSenderNodemailer {
     const transporter = nodemailer.createTransport(config);
     return await transporter.sendMail({
       ...msg,
-      from: 'sparksofsharks@meta.ua',
+      from: process.env.EMAIL,
     });
   }
 }
