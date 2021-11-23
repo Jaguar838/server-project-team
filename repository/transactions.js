@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Transaction = require('../model/transaction');
 const Users = require('./users');
 
@@ -110,8 +111,6 @@ const removeTransaction = async (transactionId, userId) => {
 };
 
 const updateTransaction = async (transactionId, body, userId) => {
-  console.log('Hi, there!!!');
-
   const transactionToUpdate = await Transaction.findOne({
     _id: transactionId,
     owner: userId,
@@ -143,11 +142,6 @@ const updateTransaction = async (transactionId, body, userId) => {
 
   const newUserBalance = (lastTransaction?.balanceAfter || 0) + amountChange;
 
-  console.log('Hi, here!');
-  console.log(oldAmount);
-  console.log(newAmount);
-  console.log(amountChange);
-
   if (amountChange) {
     await updateBalanceForTransactions(laterTransactions, amountChange);
     await Users.updateBalance(userId, newUserBalance);
@@ -171,7 +165,7 @@ const listTransactionStats = async (userId, month, year) => {
     year,
   });
 
-  const stats = allTransactions.reduce((acc, { category, amount }) => {
+  const stats1 = allTransactions.reduce((acc, { category, amount }) => {
     const id = category.toString();
 
     return {
@@ -180,7 +174,47 @@ const listTransactionStats = async (userId, month, year) => {
     };
   }, {});
 
-  return stats;
+  const stats = await Transaction.aggregate([
+    {
+      $match: {
+        $and: [
+          {
+            owner: mongoose.Types.ObjectId(userId),
+            month,
+            year,
+          },
+        ],
+      },
+    },
+
+    {
+      $group: {
+        _id: '$category',
+        amount: { $sum: '$amount' },
+      },
+    },
+
+    {
+      $project: {
+        _id: 0,
+        categoryId: '$_id',
+        amount: 1,
+      },
+    },
+  ]);
+
+  const result = stats.reduce(
+    (acc, { categoryId, amount }) => ({
+      ...acc,
+      [categoryId]: amount,
+    }),
+    {},
+  );
+
+  console.log(result);
+  console.log(stats1);
+
+  return result;
 };
 
 const updateBalanceForTransactions = async (transactions, amount) => {
@@ -230,7 +264,7 @@ const findLaterTransactions = (transactions, date, createdAt = new Date()) => {
   return transactions.filter(
     transaction =>
       transaction.date > date ||
-      (transaction.date >= createdAt && transaction.date > createdAt),
+      (transaction.date >= date && transaction.createdAt > createdAt),
   );
 };
 

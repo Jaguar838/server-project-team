@@ -17,7 +17,7 @@ const upload = multer({
   // Ограничиваем размер загружаемого аватара 2000000 байт
   limits: { fieldSize: 2000000 },
   fileFilter: (req, file, callback) => {
-    if (file.mimetype.includes('image')) {
+    if (file.mimetype.includes('image') && !file.mimetype.includes('gif')) {
       return callback(null, true);
     }
 
