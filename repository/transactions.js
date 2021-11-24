@@ -34,9 +34,12 @@ const listTransactions = async (userId, query) => {
     },
   });
 
+  const allTransactions = await Transaction.find({ owner: userId });
+  const years = [...new Set(allTransactions.map(({ year }) => year))].sort();
+
   const { docs: transactions, ...pageInfo } = results;
 
-  return { pageInfo, transactions };
+  return { pageInfo, transactions, years };
 };
 
 const getTransactionById = async (transactionId, userId) => {
