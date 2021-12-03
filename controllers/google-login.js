@@ -1,50 +1,53 @@
+// https://googleapis.dev/nodejs/google-auth-library/5.8.0/interfaces/TokenPayload.html
+
 const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(
-  '516350701159-h40lcnb8kgtv81mnomi4ugrhobi0a9gb.apps.googleusercontent.com',
-);
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = process.env;
-const { User } = require('../../models');
 
-const { nanoid } = require('nanoid');
+const { GOOGLE_CLIENT_ID } = process.env;
+const { JWT_SECRET_KEY } = process.env;
+const { User } = require('../model/user');
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-const { users: service } = require('../../services');
+// @desc    Login with google
+// @route   POST /api/users/google-login нада создать
+// @access  Public
 
-const googlelogin = (req, res) => {
+const signInWithGoogle = async (req, res) => {
   const { tokenId } = req.body;
-  client
+  const ticket = await client
     .verifyIdToken({
       idToken: tokenId,
-      audience:
-        '516350701159-h40lcnb8kgtv81mnomi4ugrhobi0a9gb.apps.googleusercontent.com',
+      audience: GOOGLE_CLIENT_ID,
     })
     .then(response => {
       const { email_verified, name, email } = response.payload;
 
       if (email_verified) {
         User.findOne({ email }).exec((err, user) => {
-          const verifyToken = nanoid();
           if (err) {
             return res.status(400).json({ error: 'Something went wrong....' });
           } else {
             if (user) {
-              const token = jwt.sign({ id: user.id }, SECRET_KEY);
+              const token = jwt.sign({ id: user.id }, JWT_SECRET_KEY, {
+                expiresIn: '7d',
+              });
 
-              const { id, email, verifyToken } = user;
+              const { id, email, verifyTokenEmail } = user;
 
               service.update(user.id, { token });
 
               res.json({
-                user: { id, token, email, verifyToken },
+                user: { id, token, email, verifyTokenEmail },
               });
             } else {
-              let password = email + SECRET_KEY;
+              const password = email + JWT_SECRET_KEY;
+              // const password = `${email}${process.env.JWT_SECRET_KEY}`;
 
               let newUser = new User({
                 name,
                 email,
                 password,
-                verifyToken,
+                verifyTokenEmail,
               });
               newUser.save((err, data) => {
                 if (err) {
@@ -53,7 +56,9 @@ const googlelogin = (req, res) => {
                     .json({ error: 'Something went wrong....' });
                 }
 
-                const token = jwt.sign({ id: data.id }, SECRET_KEY);
+                const token = jwt.sign({ id: data.id }, JWT_SECRET_KEY, {
+                  expiresIn: '7d',
+                });
 
                 const { id, email } = newUser;
 
@@ -70,11 +75,11 @@ const googlelogin = (req, res) => {
     });
 };
 
-module.exports = googlelogin;
+module.exports = signInWithGoogle;
+
 // Source: https://stackoverflow.com/a/67867228 .
-import { Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
-import UserModel from './../models/user';
+import UserModel from '../model/user';
 var jwt = require('jsonwebtoken');
 
 // @desc    Login with google
@@ -82,7 +87,7 @@ var jwt = require('jsonwebtoken');
 // @access  Public
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-export const signInWithGoogle = async (req: Request, res: Response) => {
+export const signInWithGoogle = async (req, res) => {
   const { idToken } = req.body;
   const ticket = await client
     .verifyIdToken({
@@ -129,7 +134,6 @@ export const signInWithGoogle = async (req: Request, res: Response) => {
                 _id,
                 name,
                 email,
-                role,
                 token,
               });
             });
