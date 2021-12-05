@@ -13,6 +13,10 @@ const schemaLogin = Joi.object({
   password: Joi.string().alphanum().min(6).required(),
 });
 
+const schemaLoginByGoogle = Joi.object({
+  token: Joi.string().required(),
+});
+
 const schemaPatch = Joi.object({
   name: Joi.string().min(1).max(12).optional(),
   email: Joi.string().email().optional(),
@@ -38,6 +42,10 @@ module.exports.validateRegistration = async (req, res, next) => {
 
 module.exports.validateLogin = async (req, res, next) => {
   return await validate(schemaLogin, req.body, res, next);
+};
+
+module.exports.validateLoginByGoogle = async (req, res, next) => {
+  return await validate(schemaLoginByGoogle, req.body, res, next);
 };
 
 module.exports.validateUserPatch = async (req, res, next) => {

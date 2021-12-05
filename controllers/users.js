@@ -93,6 +93,30 @@ const login = async (req, res) => {
   });
 };
 
+const loginByGoogle = async (req, res) => {
+  const { token } = req.body;
+  const { id } = jwt.verify(token, SECRET_KEY);
+
+  const user = await Users.findById(id);
+
+  if (!user || user.token !== token)
+    throw new CustomError(HttpCode.UNAUTHORIZED, 'Invalid credentials');
+
+  const { name, balance, avatar, email } = user;
+
+  return res.status(HttpCode.OK).json({
+    status: 'success',
+    code: HttpCode.OK,
+    data: {
+      email,
+      name,
+      balance,
+      token,
+      avatar,
+    },
+  });
+};
+
 const logout = async (req, res) => {
   const id = req.user._id;
   await Users.updateToken(id, null);
@@ -243,4 +267,5 @@ module.exports = {
   uploadAvatar,
   verifyUser,
   repeatEmailForVerifyUser,
+  loginByGoogle,
 };
