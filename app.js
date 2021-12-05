@@ -1,6 +1,8 @@
 const express = require('express');
+const passport = require('passport');
 const logger = require('morgan');
 const cors = require('cors');
+require('./helpers/google-auth');
 
 const usersRouter = require('./routes/users/users');
 const transactionsRouter = require('./routes/transactions/transactions');
@@ -40,6 +42,7 @@ app.use(express.json({ limit: 10000 }));
 app.use(boolParser());
 
 // Routes
+app.use(passport.initialize());
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 app.use('/api/categories', categoriesRouter);

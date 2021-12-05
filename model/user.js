@@ -22,7 +22,7 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, 'Set password for user'],
+      // required: [true, 'Set password for user'],
     },
     balance: {
       type: Number,
@@ -50,7 +50,9 @@ const userSchema = new Schema(
     // но у него есть для верификации токен генерируемый по умолчанию в db.
     verifyTokenEmail: {
       type: String,
+      /*
       required: [true, 'Verify token is required'],
+      */
       default: crypto.randomUUID(),
     },
   },
