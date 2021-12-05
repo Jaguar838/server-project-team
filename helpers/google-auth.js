@@ -4,12 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../model/user');
 require('dotenv').config();
 
-const {
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  FRONTEND_LINK,
-  JWT_SECRET_KEY,
-} = process.env;
+const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, BACKEND_LINK, JWT_SECRET_KEY } =
+  process.env;
 
 const generateToken = id => {
   return jwt.sign({ id }, JWT_SECRET_KEY, {
@@ -22,7 +18,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: `${FRONTEND_LINK}/api/users/google/callback`,
+      callbackURL: `${BACKEND_LINK}api/users/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       const email = profile._json.email;
@@ -37,7 +33,6 @@ passport.use(
           verifyTokenEmail: null,
           isVerified: true,
         });
-        console.log(newUser);
         const token = generateToken(newUser._id.toString());
         await User.updateOne({ email }, { token });
         done(null, { token });
